@@ -25,7 +25,7 @@ function init() {
 function sendPayload() {
   let payload = getPayload(urlParams);
   var xhttp = new XMLHttpRequest();
-  xhttp.open("POST", "http://35.154.239.120", true);
+  xhttp.open("POST", "https://api.kalagato.co", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send(payload);
 
@@ -43,7 +43,7 @@ function sendPayload() {
       }
     } else if (params.length > 2) {
       if (params[0] === "timeline") {
-        payload.push("type=aricle");
+        payload.push("type=article");
         payload.push("category=" + params[1]);
         payload.push("title=" + params[params.length - 1]);
       }
