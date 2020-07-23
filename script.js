@@ -46,7 +46,7 @@ function sendPayload() {
         payload.push("type=article");
         payload.push("category=" + params[1]);
         payload.push("title=" + params[params.length - 1]);
-        payload.push("article_id", params[2]);
+        payload.push("article_id" + params[2]);
       }
     }
     payload.push("timestamp=" + timeStamp);
