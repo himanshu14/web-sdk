@@ -85,4 +85,6 @@ function sendPayload() {
   }
 }
 
-setInterval(sendPayload, 30000);
+if (urlParams.split("/").length > 1) {
+  setInterval(sendPayload, 30000);
+}
