@@ -25,7 +25,7 @@ function init() {
 function sendPayload() {
   let payload = getPayload(urlParams);
   var xhttp = new XMLHttpRequest();
-  xhttp.open("POST", "https://api.kalagato.co", true);
+  xhttp.open("POST", "https://newsbytes-api.kalagato.co", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send(payload);
 
@@ -85,6 +85,6 @@ function sendPayload() {
   }
 }
 
-if (urlParams.split("/").length > 1) {
+if (urlParams.split("/").length > 1 && urlParams.split("/")[1] === 'india') {
   setInterval(sendPayload, 30000);
 }
