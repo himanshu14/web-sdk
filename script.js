@@ -85,6 +85,6 @@ function sendPayload() {
   }
 }
 
-if (urlParams.split("/").length > 1 && urlParams.split("/")[1] === 'india') {
+if (urlParams.split("/").length > 1 && urlParams.split("/")[1] === 'entertainment') {
   setInterval(sendPayload, 30000);
 }
