@@ -85,6 +85,9 @@ function sendPayload() {
   }
 }
 
-if (urlParams.split("/").length > 1 && urlParams.split("/")[1] === 'entertainment') {
+if (
+  urlParams.split("/").length > 1 &&
+  urlParams.indexOf("/entertainment/") !== -1
+) {
   setInterval(sendPayload, 30000);
 }
