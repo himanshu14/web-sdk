@@ -35,6 +35,7 @@ function sendPayload() {
       clientId = getClientId();
     endTime = tabActive ? new Date() : endTime;
     params = urlParams.split("/");
+    params.shift();
 
     if (params.length === 2) {
       if (params[0] === "category") {
