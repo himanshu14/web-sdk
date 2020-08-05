@@ -86,9 +86,6 @@ function sendPayload() {
   }
 }
 
-if (
-  urlParams.split("/").length > 1 &&
-  urlParams.indexOf("/entertainment/") !== -1
-) {
+if (urlParams.split("/").length > 1 && urlParams.indexOf("/auto/") !== -1) {
   setInterval(sendPayload, 30000);
 }
