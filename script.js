@@ -17,6 +17,7 @@ window.onblur = function () {
 };
 
 function init() {
+  sendPayload();
   urlParams = window.location.pathname;
   startTime = new Date();
   endTime = new Date();
