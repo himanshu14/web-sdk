@@ -2,6 +2,7 @@ let urlParams = window.location.pathname;
 let startTime = new Date();
 let endTime = new Date();
 let tabActive = true;
+let intervalId;
 
 window.onfocus = function () {
   let currentTime = new Date();
@@ -20,6 +21,11 @@ function init() {
   startTime = new Date();
   endTime = new Date();
   tabActive = true;
+  if (urlParams.split("/").length > 1 && urlParams.indexOf("/auto/") !== -1) {
+    intervalId = setInterval(sendPayload, 30000);
+  } else {
+    clearInterval(intervalId);
+  }
 }
 
 function sendPayload() {
@@ -84,8 +90,4 @@ function sendPayload() {
 
     return null;
   }
-}
-
-if (urlParams.split("/").length > 1 && urlParams.indexOf("/auto/") !== -1) {
-  setInterval(sendPayload, 30000);
 }
