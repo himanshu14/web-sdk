@@ -1,0 +1,59 @@
+const redis = require("redis");
+const bluebird = require("bluebird");
+const { Worker } = require("worker_threads");
+const path = require("path");
+const workerScript = path.join(__dirname, "./workerScript.js");
+bluebird.promisifyAll(redis.RedisClient.prototype);
+const client = redis.createClient({
+  port: process.env.REDIS_PORT || 6379,
+  host: process.env.REDIS_HOST || "127.0.0.1",
+});
+
+client.on("connect", () => {
+  console.log("connected script file");
+});
+
+async function upload() {
+  try {
+    let keys = await client.keysAsync(
+      `newsbytes_${process.env.CATEGORYNAME}_*`
+    );
+    await distributeLoadAcrossWorkers(3, keys);
+    process.exit();
+  } catch (e) {
+    console.log(e);
+    process.exit();
+  }
+}
+
+async function distributeLoadAcrossWorkers(workers, outerKeys) {
+  const segmentsPerWorker = Math.round(outerKeys.length / workers);
+  const promises = Array(workers)
+    .fill()
+    .map((_, index) => {
+      let keysChunk;
+      if (index === 0) {
+        keysChunk = outerKeys.slice(0, segmentsPerWorker);
+      } else if (index === workers - 1) {
+        keysChunk = outerKeys.slice(segmentsPerWorker * index);
+      } else {
+        keysChunk = outerKeys.slice(
+          segmentsPerWorker * index,
+          segmentsPerWorker * (index + 1)
+        );
+      }
+      return getEventsFromKeys(keysChunk);
+    });
+  const segmentsResults = await Promise.all(promises);
+  return segmentsResults;
+}
+
+function getEventsFromKeys(data) {
+  return new Promise((resolve, reject) => {
+    const worker = new Worker(workerScript, { workerData: data });
+    worker.on("message", resolve);
+    worker.on("error", reject);
+  });
+}
+
+upload();
