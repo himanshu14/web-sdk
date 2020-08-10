@@ -44,8 +44,13 @@ async function distributeLoadAcrossWorkers(workers, outerKeys) {
       }
       return getEventsFromKeys(keysChunk);
     });
-  const segmentsResults = await Promise.all(promises);
-  return segmentsResults;
+  try {
+    const segmentsResults = await Promise.all(promises);
+    return segmentsResults;
+  } catch (e) {
+    console.log(e);
+    process.exit();
+  }
 }
 
 function getEventsFromKeys(data) {

@@ -22,41 +22,45 @@ client.on("connect", () => {
 let S3Promises = [];
 
 async function putDataInS3(workerData) {
-  let finalData = { data: [] };
-  for (let i = 0; i < workerData.length; i++) {
-    let data = await client.hgetallAsync(workerData[i]),
-      timestampKeys = Object.keys(data);
+  try {
+    let finalData = { data: [] };
+    for (let i = 0; i < workerData.length; i++) {
+      let data = await client.hgetallAsync(workerData[i]),
+        timestampKeys = Object.keys(data);
 
-    for (let timestampKey in timestampKeys) {
-      let eventPayload = await client.hmgetAsync(
-        workerData[i],
-        timestampKeys[timestampKey]
+      for (let timestampKey in timestampKeys) {
+        let eventPayload = await client.hmgetAsync(
+          workerData[i],
+          timestampKeys[timestampKey]
+        );
+        finalData.data.push(JSON.parse(eventPayload[0]));
+      }
+
+      let filePath = workerData[i].split("_"),
+        userId = filePath.slice(3).join("_");
+      let params = {
+        Body: JSON.stringify(finalData),
+        ContentType: "application/json; charset=utf-8",
+        Bucket: "newsbytes-sdk",
+        Key: `${filePath[1]}/${filePath[2]}/${userId}/final.json`,
+      };
+
+      S3Promises.push(
+        new Promise((resolve, reject) => {
+          s3.putObject(params, (err, results) => {
+            if (err) {
+              reject(err);
+            } else resolve(results);
+          });
+        })
       );
-      finalData.data.push(JSON.parse(eventPayload[0]));
     }
-
-    let filePath = workerData[i].split("_"),
-      userId = filePath.slice(3).join("_");
-    let params = {
-      Body: JSON.stringify(finalData),
-      ContentType: "application/json; charset=utf-8",
-      Bucket: "newsbytes-sdk",
-      Key: `${filePath[1]}/${filePath[2]}/${userId}/final.json`,
-    };
-
-    S3Promises.push(
-      new Promise((resolve, reject) => {
-        s3.putObject(params, (err, results) => {
-          if (err) {
-            reject(err);
-          } else resolve(results);
-        });
-      })
-    );
+    let result = await Promise.all(S3Promises);
+    return result;
+  } catch (e) {
+    console.log(e);
+    process.exit();
   }
-
-  let result = await Promise.all(S3Promises);
-  return result;
 }
 
 if (!isMainThread) {
