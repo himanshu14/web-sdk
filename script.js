@@ -22,7 +22,11 @@ function init() {
   startTime = new Date();
   endTime = new Date();
   tabActive = true;
-  if (urlParams.split("/").length > 1 && urlParams.indexOf("/auto/") !== -1) {
+  if (
+    urlParams.split("/").length > 1 &&
+    urlParams.indexOf("/auto/") !== -1 &&
+    window.location.search.indexOf("utm_source") === -1
+  ) {
     intervalId = setInterval(sendPayload, 30000);
   } else {
     clearInterval(intervalId);
