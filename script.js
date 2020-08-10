@@ -47,12 +47,12 @@ function sendPayload() {
     if (params.length === 2) {
       if (params[0] === "category") {
         payload.push("type=category");
-        payload.push("category=" + params[1]);
+        payload.push("category=" + params[1].toLowerCase());
       }
     } else if (params.length > 2) {
       if (params[0] === "timeline") {
         payload.push("type=article");
-        payload.push("category=" + params[1]);
+        payload.push("category=" + params[1].toLowerCase());
         payload.push("title=" + params[params.length - 1]);
         payload.push("article_id=" + params[2]);
       }
