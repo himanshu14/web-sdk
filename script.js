@@ -24,7 +24,6 @@ function init() {
   tabActive = true;
   if (
     urlParams.split("/").length > 1 &&
-    urlParams.indexOf("/auto/") !== -1 &&
     window.location.search.indexOf("utm_source") === -1
   ) {
     intervalId = setInterval(sendPayload, 30000);
