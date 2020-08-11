@@ -34,10 +34,12 @@ function init() {
 
 function sendPayload() {
   let payload = getPayload(urlParams);
-  var xhttp = new XMLHttpRequest();
-  xhttp.open("POST", "https://newsbytes-api.kalagato.co", true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send(payload);
+  if (payload.indexOf("client_id=null") === -1) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "https://newsbytes-api.kalagato.co", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(payload);
+  }
 
   function getPayload(urlParams) {
     let payload = [],
