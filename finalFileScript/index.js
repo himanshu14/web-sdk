@@ -10,7 +10,7 @@ const client = redis.createClient({
 });
 
 client.on("connect", () => {
-  console.log("connected script file");
+  console.log("connected script file" + process.env.CATEGORYNAME);
 });
 
 async function upload() {
@@ -49,6 +49,7 @@ async function distributeLoadAcrossWorkers(workers, outerKeys) {
     return segmentsResults;
   } catch (e) {
     console.log(e);
+    console.log("Error on" + process.env.CATEGORYNAME);
     process.exit();
   }
 }
