@@ -18,7 +18,7 @@ async function upload() {
     let keys = await client.keysAsync(
       `newsbytes_${process.env.CATEGORYNAME}_*`
     );
-    await distributeLoadAcrossWorkers(3, keys);
+    await distributeLoadAcrossWorkers(2, keys);
     process.exit();
   } catch (e) {
     console.log(e);
