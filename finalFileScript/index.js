@@ -4,6 +4,8 @@ const { Worker } = require("worker_threads");
 const path = require("path");
 const workerScript = path.join(__dirname, "./workerScript.js");
 bluebird.promisifyAll(redis.RedisClient.prototype);
+const os = require("os");
+const threadCount = os.cpus().length;
 const client = redis.createClient({
   port: process.env.REDIS_PORT || 6379,
   host: process.env.REDIS_HOST || "127.0.0.1",
@@ -18,7 +20,7 @@ async function upload() {
     let keys = await client.keysAsync(
       `newsbytes_${process.env.CATEGORYNAME}_*`
     );
-    await distributeLoadAcrossWorkers(2, keys);
+    await distributeLoadAcrossWorkers(threadCount, keys);
     process.exit();
   } catch (e) {
     console.log(e);
