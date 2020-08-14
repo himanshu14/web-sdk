@@ -12,12 +12,14 @@ const client = redis.createClient({
 });
 
 client.on("connect", () => {
-  console.log("connected script file");
+  console.log("connected script file" + process.env.CATEGORYNAME);
 });
 
 async function upload() {
   try {
-    let keys = await client.keysAsync(`newsbytes_*`);
+    let keys = await client.keysAsync(
+      `newsbytes_${process.env.CATEGORYNAME}_*`
+    );
     await distributeLoadAcrossWorkers(threadCount, keys);
     process.exit();
   } catch (e) {
