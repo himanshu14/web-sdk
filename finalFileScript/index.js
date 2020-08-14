@@ -49,7 +49,6 @@ async function distributeLoadAcrossWorkers(workers, outerKeys) {
     return segmentsResults;
   } catch (e) {
     console.log(e);
-    console.log("Error on" + process.env.CATEGORYNAME);
     process.exit();
   }
 }
