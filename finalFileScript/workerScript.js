@@ -43,7 +43,7 @@ async function putDataInS3(workerData) {
           Body: JSON.stringify(finalData),
           ContentType: "application/json; charset=utf-8",
           Bucket: "newsbytes-sdk",
-          Key: `${filePath[1]}/${filePath[2]}/${userId}/final.json`,
+          Key: `${filePath[2]}/${filePath[3]}/${userId}/final.json`,
         };
 
         S3Promises.push(
