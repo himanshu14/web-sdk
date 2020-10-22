@@ -68,6 +68,7 @@ function sendPayload() {
     payload.push("time_spent=" + (endTime - startTime) / 1000);
     payload.push("start_time=" + startTime);
     payload.push("end_time=" + endTime);
+    payload.push("userID=", getClientId());
 
     return payload.join("&");
   }
