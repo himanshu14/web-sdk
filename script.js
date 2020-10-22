@@ -36,7 +36,7 @@ function sendPayload() {
   let payload = getPayload(urlParams);
   if (payload.indexOf("client_id=null") === -1) {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "https://newsbytes-api.kalagato.co", true);
+    xhttp.open("POST", "https://api.kalagato.co", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send(payload);
   }
