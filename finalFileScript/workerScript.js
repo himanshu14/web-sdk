@@ -58,7 +58,6 @@ async function putDataInS3(workerData) {
       }
     }
     let result = await Promise.all(S3Promises);
-    console.log("done");
     return result;
   } catch (e) {
     console.log(e);
