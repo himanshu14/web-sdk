@@ -11,6 +11,6 @@
   "dependencies": {
     "aws-sdk": "^2.713.0",
     "bluebird": "^3.7.2",
-    "redis": "^3.0.2"
+    "redis": "^3.1.1"
   }
 }
